@@ -1,23 +1,85 @@
-import logo from './logo.svg';
+import * as React from 'react';
 import './App.css';
+import BookLIst from './components/BookLIst';
+import * as API from './utils/BooksAPI';
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import { SearchBooks } from './components/SearchBooks';
+import { SearchButtton } from './helpers/SearchButtton';
+
+const shelf = [
+  ['currentlyReading', 'Currently Reading'],
+  ['wantToRead', 'Want to Read'],
+  ['read', 'Read'],
+];
+export const shelfs = shelf.map((data) => data);
 
 function App() {
+  const [books, setBooks] = React.useState(()=>[]);
+  const [loading, setloading] = React.useState(false);
+
+  React.useEffect(() => {
+    setloading(true);
+    const getAllbooks = async () => {
+      const response = await API.getAll();
+
+      const newbook = response.map((book) => ({
+        id: book.id,
+        shelf: book.shelf,
+        title: book.title,
+        authors: book.authors,
+        bookphoto: book.imageLinks.thumbnail,
+      }));
+
+      setBooks(newbook);
+      setloading(false);
+    };
+
+    getAllbooks();
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignContent: 'center',
+          textAlign: 'center',
+        }}
+      >
+        Loading data...
+      </div>
+    );
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className='App'>
+      <Router>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignContent: 'center',
+            textAlign: 'center',
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          <Switch>
+            <Route
+              exact
+              path='/'
+              render={(props) => (
+                <BookLIst books={books} {...props} setBooks={setBooks} />
+              )}
+            />
+            <Route
+              path='/search'
+              render={(props) => <SearchBooks books={books} {...props} />}
+            />
+          </Switch>
+        </div>
+        <SearchButtton />
+      </Router>
     </div>
   );
 }
