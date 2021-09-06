@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import BookLIst from './components/BookLIst';
+import { BookList } from './components/BookList';
 import * as API from './utils/BooksAPI';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import { SearchBooks } from './components/SearchBooks';
@@ -69,7 +69,7 @@ function App() {
               exact
               path='/'
               render={(props) => (
-                <BookLIst books={books} {...props} setBooks={setBooks} />
+                <BookList books={books} {...props} setBooks={setBooks} />
               )}
             />
             <Route
@@ -80,7 +80,7 @@ function App() {
             />
           </Switch>
         </div>
-        <SearchButtton loading={loading}/>
+        <SearchButtton loading={loading} />
       </Router>
     </div>
   );

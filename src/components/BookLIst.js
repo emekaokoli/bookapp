@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { shelfs } from '../App';
 import { BookShelf } from './BookShelf';
 
-const BookLIst = ({ books, loading, setBooks }) => {
+export const BookList = ({ books, loading, setBooks }) => {
   //console.log(books);
 
   return (
@@ -27,9 +27,7 @@ const BookLIst = ({ books, loading, setBooks }) => {
   );
 };
 
-BookLIst.propTypes = {
+BookList.propTypes = {
   books: PropTypes.array.isRequired,
   props: PropTypes.object,
 };
-
-export default BookLIst;
