@@ -19,12 +19,15 @@ export const Book = ({ book, loading, setBooks }) => {
     const res = await API.update(book, shelf).then((response) =>
       API.getAll(response),
     );
-    const result = Array.from(res)
-    console.log(result);
-    setBooks(result);
+    const result = Array.from(res);
+    
+    if (result) {
+      return setBooks(result) 
+    } else {
+     return []
+    }
   };
 
-  //console.log(getUpdatedSelection && getUpdatedSelection);
   return (
     <div className='book'>
       <div className='book-top'>
@@ -42,7 +45,7 @@ export const Book = ({ book, loading, setBooks }) => {
             value={book.shelf}
             //value={getselect}
           >
-            <option value='move' disabled={loading && loading}>
+            <option value='move' disabled>
               Move to...
             </option>
             {Array.from(shelfs).map(([shelfId, shelfName]) => {

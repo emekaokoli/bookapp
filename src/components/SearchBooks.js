@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Book } from './Book';
 import * as API from '../utils/BooksAPI';
+import PropTypes from 'prop-types';
 
-export const SearchBooks = ({ books }) => {
+export const SearchBooks = ({ books, setBooks }) => {
   const [query, setQuery] = useState('');
   const [searchRepo, setSearchRepo] = useState([]);
 
@@ -11,19 +12,18 @@ export const SearchBooks = ({ books }) => {
     e.preventDefault();
     e.persist();
     setQuery(e.target.value);
-    API.search(query, 20).then(
-      (res) =>
-        setSearchRepo(
-          res &&
-            res.map((book) => ({
-              id: book.id,
-              shelf: book.shelf,
-              title: book.title,
-              authors: book.authors,
-              bookphoto: book.imageLinks.thumbnail,
-            })),
-        ),
-      //window.location = '/',
+
+    API.search(query || e.target.value, 20).then((res) =>
+      setSearchRepo(
+        res ||
+          [].map((book) => ({
+            id: book.id,
+            shelf: book.shelf,
+            title: book.title,
+            authors: book.authors,
+            bookphoto: book.imageLinks.thumbnail,
+          })),
+      ),
     );
   };
 
@@ -47,17 +47,24 @@ export const SearchBooks = ({ books }) => {
           <h1>Search</h1>
         </header>
         <ol className='books-grid'>
-          {searchRepo &&
-            searchRepo.map((book) => {
-              //console.log(book);
-              return (
-                <li key={book.id}>
-                  <Book book={book} />
-                </li>
-              );
-            })}
+          {query
+            ? searchRepo &&
+              searchRepo.map((book) => {
+                return (
+                  <li key={book.id}>
+                    <Book book={book} setBooks={setBooks} />
+                  </li>
+                );
+              })
+            : []}
         </ol>
       </div>
     </div>
   );
+};
+SearchBooks.propTypes = {
+  books: PropTypes.array,
+  query: PropTypes.string,
+  searchRepo: PropTypes.array,
+  setBooks: PropTypes.func,
 };

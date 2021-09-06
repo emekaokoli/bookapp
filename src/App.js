@@ -14,7 +14,7 @@ const shelf = [
 export const shelfs = shelf.map((data) => data);
 
 function App() {
-  const [books, setBooks] = React.useState(()=>[]);
+  const [books, setBooks] = React.useState([]);
   const [loading, setloading] = React.useState(false);
 
   React.useEffect(() => {
@@ -74,11 +74,13 @@ function App() {
             />
             <Route
               path='/search'
-              render={(props) => <SearchBooks books={books} {...props} />}
+              render={(props) => (
+                <SearchBooks books={books} setBooks={setBooks} {...props} />
+              )}
             />
           </Switch>
         </div>
-        <SearchButtton />
+        <SearchButtton loading={loading}/>
       </Router>
     </div>
   );
