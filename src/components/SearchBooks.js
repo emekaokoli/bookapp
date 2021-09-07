@@ -7,25 +7,33 @@ import PropTypes from 'prop-types';
 export const SearchBooks = ({ books, setBooks }) => {
   const [query, setQuery] = useState('');
   const [searchRepo, setSearchRepo] = useState([]);
+  const {shelf} = books
+ 
 
-  const search = (e) => {
+  const search = async (e) => {
     e.preventDefault();
     e.persist();
     setQuery(e.target.value);
-
-    API.search(query || e.target.value, 20).then((res) =>
-      setSearchRepo(
-        res ||
-          [].map((book) => ({
-            id: book.id,
-            shelf: book.shelf,
-            title: book.title,
-            authors: book.authors,
-            bookphoto: book.imageLinks.thumbnail,
-          })),
-      ),
-    );
+    try {
+       await API.search(query, 20).then((res) =>
+         setSearchRepo(
+           res &&
+             res.map((book) => ({
+               id: book.id,
+               shelf,
+               title: book.title,
+               authors: book.authors,
+               bookphoto: book.imageLinks.thumbnail,
+             })),
+         ),
+       );
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+
+  console.log('searchRepo');
+  console.log(books);
 
   return (
     <div className='search-books'>
@@ -38,7 +46,7 @@ export const SearchBooks = ({ books, setBooks }) => {
             type='text'
             placeholder='Search by title or author'
             value={query}
-            onChange={(event) => search(event)}
+            onChange={(e) => search(e)}
           />
         </div>
       </div>

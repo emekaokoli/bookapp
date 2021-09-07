@@ -4,30 +4,16 @@ import { shelfs } from '../App';
 import * as API from '../utils/BooksAPI';
 
 export const Book = ({ book, loading, setBooks }) => {
-  // const [getall, setAll] = React.useState([]);
-  //const [getUpdatedSelection, setGetUpdatedSelection] = React.useState([]);
-
-  // React.useEffect(() => {
-  //   const updateData = async () => {
-  //     const response = await books;
-  //     setAll(response);
-  //   };
-  //   updateData();
-  // }, [books]);
+  const { bookphoto, shelf, title, authors } = book;
 
   const handleSelect = async (book, shelf) => {
     const res = await API.update(book, shelf).then((response) =>
       API.getAll(response),
     );
     const result = Array.from(res);
-    
-    if (result) {
-      return setBooks(result) 
-    } else {
-     return []
-    }
+    setBooks(result);
   };
-
+  
   return (
     <div className='book'>
       <div className='book-top'>
@@ -36,14 +22,13 @@ export const Book = ({ book, loading, setBooks }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${book.bookphoto})`,
+            backgroundImage: `url(${bookphoto})`,
           }}
         ></div>
         <div className='book-shelf-changer'>
           <select
             onChange={(event) => handleSelect(book, event.target.value)}
-            value={book.shelf}
-            //value={getselect}
+            value={shelf}
           >
             <option value='move' disabled>
               Move to...
@@ -55,18 +40,22 @@ export const Book = ({ book, loading, setBooks }) => {
                 </option>
               );
             })}
-            <option value='none'>None</option>
+            <option value='none' defaultValue='none'>
+              None
+            </option>
           </select>
         </div>
       </div>
-      <div className='book-title'>{book.title}</div>
-      {Array.from(book).map((authors, i) => {
+      <div className='book-title'>{title}</div>
+      <div>{authors}</div>
+      {/* {Array.from(book).map(({authors}, i) => {
+        console.log(authors);
         return (
           <div key={i} className='book-authors'>
             {authors}
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 };

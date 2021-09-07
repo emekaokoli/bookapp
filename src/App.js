@@ -21,7 +21,8 @@ function App() {
     setloading(true);
     const getAllbooks = async () => {
       const response = await API.getAll();
-
+      // console.log('response');
+      // console.log(response);
       const newbook = response.map((book) => ({
         id: book.id,
         shelf: book.shelf,
@@ -52,6 +53,7 @@ function App() {
       </div>
     );
   }
+  console.log(books);
   return (
     <div className='App'>
       <Router>
@@ -65,19 +67,12 @@ function App() {
           }}
         >
           <Switch>
-            <Route
-              exact
-              path='/'
-              render={(props) => (
-                <BookList books={books} {...props} setBooks={setBooks} />
-              )}
-            />
-            <Route
-              path='/search'
-              render={(props) => (
-                <SearchBooks books={books} setBooks={setBooks} {...props} />
-              )}
-            />
+            <Route exact path='/'>
+              <BookList books={books} setBooks={setBooks} />
+            </Route>
+            <Route path='/search'>
+              <SearchBooks books={books} setBooks={setBooks} loading={loading}/>
+            </Route>
           </Switch>
         </div>
         <SearchButtton loading={loading} />
