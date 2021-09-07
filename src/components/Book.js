@@ -14,10 +14,7 @@ export const Book = ({ book, loading, setBooks }) => {
     const result = Array.from(res);
     setBooks(result);
   };
-  console.log('bbosk');
-  console.log(shelf);
-  console.log('bookphoto');
-   console.log(bookphoto);
+
   return (
     <div className='book'>
       <div className='book-top'>
@@ -52,17 +49,11 @@ export const Book = ({ book, loading, setBooks }) => {
       </div>
       <div className='book-title'>{title}</div>
       <div>{authors}</div>
-      {/* {Array.from(book).map(({authors}, i) => {
-        console.log(authors);
-        return (
-          <div key={i} className='book-authors'>
-            {authors}
-          </div>
-        );
-      })} */}
     </div>
   );
 };
 Book.propTypes = {
   book: PropTypes.object.isRequired,
+  loading: PropTypes.bool,
+  setBooks: PropTypes.func,
 };
