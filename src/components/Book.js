@@ -5,14 +5,14 @@ import { imageData } from '../icons/data';
 
 export const Book = ({
   books,
-  book,
+  newbook,
   loading,
   setBooks,
   handleBookUpdate,
   defaultValue,
   shelf,
 }) => {
-  const { authors, title, bookphoto } = book;
+  const { authors, title, bookphoto } = newbook;
 
   const bookImage = bookphoto && bookphoto ? bookphoto : imageData;
   const bookTitle = title ? title : 'No title available';
@@ -29,8 +29,8 @@ export const Book = ({
         ></div>
         <div className='book-shelf-changer'>
           <select
-            onChange={(event) => handleBookUpdate(book, event.target.value)}
-            value={book.shelf}
+            onChange={(event) => handleBookUpdate(newbook, event.target.value)}
+            value={newbook.shelf}
             defaultValue={defaultValue}
           >
             <option value='move' disabled>
@@ -54,7 +54,7 @@ export const Book = ({
 };
 Book.propTypes = {
   books: PropTypes.array.isRequired,
-  book: PropTypes.object.isRequired,
+  newbook: PropTypes.object.isRequired,
   loading: PropTypes.bool,
   setBooks: PropTypes.func,
   defaultValue: PropTypes.string,

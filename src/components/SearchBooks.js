@@ -8,7 +8,7 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
   const [query, setQuery] = useState('');
   const [searchRepo, setSearchRepo] = useState([]);
   const [error, setError] = useState(false);
-  //const [state, setstate] = useState('')
+  
 
   let defaultValue = 'none';
 
@@ -67,11 +67,11 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
         <ol className='books-grid'>
           {query &&
             searchRepo &&
-            searchRepo.map((book) => {
+            searchRepo.map((newbook) => {
               return (
-                <li key={book.id}>
+                <li key={newbook.id}>
                   <Book
-                    book={book}
+                    newbook={newbook}
                     setBooks={setBooks}
                     books={books}
                     handleBookUpdate={handleBookUpdate}

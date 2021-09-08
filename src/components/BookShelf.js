@@ -3,26 +3,27 @@ import PropTypes from 'prop-types';
 import { Book } from './Book';
 
 export const BookShelf = ({
-  shelfBooks,
+  shelfedfBooks,
   shelf,
   loading,
   setBooks,
   books,
   handleBookUpdate,
 }) => {
+  
   return (
     <div>
       <div className='bookshelf'>
         <h2 className='bookshelf-title'>{shelf}</h2>
         <div className='bookshelf-books'>
           <ul className='books-grid'>
-            {shelfBooks &&
-              shelfBooks.map((book) => {
+            {shelfedfBooks &&
+              shelfedfBooks.map((newbook) => {
                 return (
-                  <li key={book.id}>
+                  <li key={newbook.id}>
                     <Book
                       shelf={shelf}
-                      book={book}
+                      newbook={newbook}
                       loading={loading}
                       books={books}
                       setBooks={setBooks}
@@ -38,7 +39,7 @@ export const BookShelf = ({
   );
 };
 BookShelf.propTypes = {
-  shelfBooks: PropTypes.array.isRequired,
+  shelfedfBooks: PropTypes.array.isRequired,
   shelf: PropTypes.string,
   loading: PropTypes.bool,
   setBooks: PropTypes.func.isRequired,
