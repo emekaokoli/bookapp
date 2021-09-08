@@ -8,11 +8,11 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
   const [query, setQuery] = useState('');
   const [searchRepo, setSearchRepo] = useState([]);
   const [error, setError] = useState(false);
-  
+  //const [defaultValue, setdefaultValue] = useState('none')
 
   let defaultValue = 'none';
 
-  const search = async (e) => {
+  const searchBooks = async (e) => {
     e.preventDefault();
     e.persist();
     setQuery(e.target.value);
@@ -20,10 +20,9 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
       await API.search(query.trim(), 20).then((res) => {
         books.find((bk) => {
           if (bk.id === books.id) {
-            return (defaultValue = bk.shelf);
-          } else {
-            return defaultValue;
+            defaultValue = bk.shelf;
           }
+          return defaultValue;
         });
 
         return setSearchRepo(
@@ -42,9 +41,12 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
       console.error(error.message);
     }
   };
+  //console.log(defaultValue);
+
   const ErrorComponent = () => {
     return <h3>{`No results found for ${query}`}</h3>;
   };
+
   return (
     <div className='search-books'>
       <div className='search-books-bar'>
@@ -56,7 +58,7 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
             type='text'
             placeholder='Search by title or author'
             value={query}
-            onChange={(event) => search(event)}
+            onChange={(event) => searchBooks(event)}
           />
         </div>
       </div>

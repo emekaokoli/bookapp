@@ -30,7 +30,7 @@ export const Book = ({
         <div className='book-shelf-changer'>
           <select
             onChange={(event) => handleBookUpdate(newbook, event.target.value)}
-            value={newbook.shelf}
+            value={books.shelf}
             defaultValue={defaultValue}
           >
             <option value='move' disabled>
