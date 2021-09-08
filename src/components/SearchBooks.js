@@ -4,36 +4,38 @@ import { Book } from './Book';
 import * as API from '../utils/BooksAPI';
 import PropTypes from 'prop-types';
 
-export const SearchBooks = ({ books, setBooks }) => {
+export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
   const [query, setQuery] = useState('');
   const [searchRepo, setSearchRepo] = useState([]);
-  const {shelf} = books
- 
-
+  let defaultValue = 'none';
   const search = async (e) => {
     e.preventDefault();
     e.persist();
     setQuery(e.target.value);
     try {
-       await API.search(query, 20).then((res) =>
-         setSearchRepo(
-           res &&
-             res.map((book) => ({
-               id: book.id,
-               shelf,
-               title: book.title,
-               authors: book.authors,
-               bookphoto: book.imageLinks.thumbnail,
-             })),
-         ),
-       );
+      await API.search(query.trim(), 20).then((res) => {
+        books.find((bk) => {
+          if (bk.id === books.id) {
+            return (defaultValue = bk.shelf);
+          } else {
+            return defaultValue;
+          }
+        });
+        return setSearchRepo(
+          res &&
+            res.map((book) => ({
+              id: book.id,
+              shelf: defaultValue,
+              title: book.title,
+              authors: book.authors,
+              bookphoto: book.imageLinks.thumbnail,
+            })),
+        );
+      });
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
-
-  console.log('searchRepo');
-  console.log(books);
 
   return (
     <div className='search-books'>
@@ -46,7 +48,7 @@ export const SearchBooks = ({ books, setBooks }) => {
             type='text'
             placeholder='Search by title or author'
             value={query}
-            onChange={(e) => search(e)}
+            onChange={(event) => search(event)}
           />
         </div>
       </div>
@@ -60,7 +62,13 @@ export const SearchBooks = ({ books, setBooks }) => {
               searchRepo.map((book) => {
                 return (
                   <li key={book.id}>
-                    <Book book={book} setBooks={setBooks} />
+                    <Book
+                      book={book}
+                      setBooks={setBooks}
+                      books={books}
+                      handleBookUpdate={handleBookUpdate}
+                      defaultValue={defaultValue}
+                    />
                   </li>
                 );
               })
@@ -75,4 +83,5 @@ SearchBooks.propTypes = {
   query: PropTypes.string,
   searchRepo: PropTypes.array,
   setBooks: PropTypes.func,
+  handleBookUpdate: PropTypes.func,
 };

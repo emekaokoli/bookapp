@@ -4,7 +4,7 @@ import { BookList } from './components/BookList';
 import * as API from './utils/BooksAPI';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import { SearchBooks } from './components/SearchBooks';
-import { SearchButtton } from './helpers/SearchButtton';
+import { SearchButton } from './helpers/SearchButton';
 
 const shelf = [
   ['currentlyReading', 'Currently Reading'],
@@ -21,8 +21,7 @@ function App() {
     setloading(true);
     const getAllbooks = async () => {
       const response = await API.getAll();
-      // console.log('response');
-      // console.log(response);
+
       const newbook = response.map((book) => ({
         id: book.id,
         shelf: book.shelf,
@@ -37,6 +36,13 @@ function App() {
 
     getAllbooks();
   }, []);
+
+  const handleBookUpdate = async (book, shelf) => {
+    book.shelf = shelf;
+    await API.update(book, shelf).then((response) => {
+      setBooks(books.filter((b) => b.id !== book.id).concat([book]));
+    });
+  };
 
   if (loading) {
     return (
@@ -53,7 +59,7 @@ function App() {
       </div>
     );
   }
-  console.log(books);
+
   return (
     <div className='App'>
       <Router>
@@ -68,14 +74,22 @@ function App() {
         >
           <Switch>
             <Route exact path='/'>
-              <BookList books={books} setBooks={setBooks} />
+              <BookList
+                books={books}
+                setBooks={setBooks}
+                handleBookUpdate={handleBookUpdate}
+              />
             </Route>
             <Route path='/search'>
-              <SearchBooks books={books} setBooks={setBooks} loading={loading}/>
+              <SearchBooks
+                books={books}
+                setBooks={setBooks}
+                handleBookUpdate={handleBookUpdate}
+              />
             </Route>
           </Switch>
         </div>
-        <SearchButtton loading={loading} />
+        <SearchButton loading={loading} />
       </Router>
     </div>
   );

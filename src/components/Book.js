@@ -1,20 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { shelfs } from '../App';
-import * as API from '../utils/BooksAPI';
 
-export const Book = ({ book, loading, setBooks }) => {
-  const { bookphoto, shelf, title, authors } = book;
-  const {imageLinks} = book
-
-  const handleSelect = async (book, shelf) => {
-    const res = await API.update(book, shelf).then((response) =>
-      API.getAll(response),
-    );
-    const result = Array.from(res);
-    setBooks(result);
-  };
-
+export const Book = ({
+  books,
+  book,
+  loading,
+  setBooks,
+  handleBookUpdate,
+  defaultValue,
+}) => {
+  const { bookphoto, title, authors } = book;
+  const { imageLinks } = books;
   return (
     <div className='book'>
       <div className='book-top'>
@@ -28,8 +25,9 @@ export const Book = ({ book, loading, setBooks }) => {
         ></div>
         <div className='book-shelf-changer'>
           <select
-            onChange={(event) => handleSelect(book, event.target.value)}
-            value={shelf}
+            onChange={(event) => handleBookUpdate(book, event.target.value)}
+            value={defaultValue}
+            defaultValue={defaultValue}
           >
             <option value='move' disabled>
               Move to...
@@ -41,9 +39,7 @@ export const Book = ({ book, loading, setBooks }) => {
                 </option>
               );
             })}
-            <option value='none' defaultValue='none'>
-              None
-            </option>
+            <option value='none'>None</option>
           </select>
         </div>
       </div>
@@ -53,7 +49,10 @@ export const Book = ({ book, loading, setBooks }) => {
   );
 };
 Book.propTypes = {
+  books: PropTypes.array.isRequired,
   book: PropTypes.object.isRequired,
   loading: PropTypes.bool,
   setBooks: PropTypes.func,
+  defaultValue: PropTypes.string,
+  handleBookUpdate: PropTypes.func.isRequired,
 };

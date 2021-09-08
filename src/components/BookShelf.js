@@ -1,8 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {Book} from './Book'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Book } from './Book';
 
-export const BookShelf = ({ shelfBooks, shelf, loading, setBooks }) => {
+export const BookShelf = ({
+  shelfBooks,
+  shelf,
+  loading,
+  setBooks,
+  books,
+  handleBookUpdate,
+}) => {
   return (
     <div>
       <div className='bookshelf'>
@@ -16,8 +23,9 @@ export const BookShelf = ({ shelfBooks, shelf, loading, setBooks }) => {
                     <Book
                       book={book}
                       loading={loading}
-                      //books={books}
+                      books={books}
                       setBooks={setBooks}
+                      handleBookUpdate={handleBookUpdate}
                     />
                   </li>
                 );
@@ -30,4 +38,9 @@ export const BookShelf = ({ shelfBooks, shelf, loading, setBooks }) => {
 };
 BookShelf.propTypes = {
   shelfBooks: PropTypes.array.isRequired,
+  shelf: PropTypes.string,
+  loading: PropTypes.bool,
+  setBooks: PropTypes.func.isRequired,
+  books: PropTypes.array.isRequired,
+  handleBookUpdate: PropTypes.func.isRequired,
 };

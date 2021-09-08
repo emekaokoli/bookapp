@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { shelfs } from '../App';
 import { BookShelf } from './BookShelf';
 
-export const BookList = ({ books, loading, setBooks }) => {
-  //console.log(books);
-
+export const BookList = ({ books, loading, setBooks, handleBookUpdate }) => {
   return (
     <div className='book'>
       {shelfs.map(([shelfId, shelfName]) => {
@@ -19,7 +17,8 @@ export const BookList = ({ books, loading, setBooks }) => {
             shelfBooks={filteredShelfBooks}
             loading={loading}
             setBooks={setBooks}
-            //books={books}
+            books={books}
+            handleBookUpdate={handleBookUpdate}
           />
         );
       })}
@@ -29,5 +28,7 @@ export const BookList = ({ books, loading, setBooks }) => {
 
 BookList.propTypes = {
   books: PropTypes.array.isRequired,
-  props: PropTypes.object,
+  loading: PropTypes.bool,
+  setBooks: PropTypes.func,
+  handleBookUpdate: PropTypes.func.isRequired,
 };
