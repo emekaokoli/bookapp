@@ -10,38 +10,23 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
   const [error, setError] = useState(false);
   //const [defaultValue, setdefaultValue] = useState('none')
 
-  let defaultValue = 'none';
-
-  const searchBooks = async (e) => {
-    e.preventDefault();
-    e.persist();
-    setQuery(e.target.value);
+  const getBooks = async () => {
     try {
-      await API.search(query.trim(), 20).then((res) => {
-        books.find((bk) => {
-          if (bk.id === books.id) {
-            defaultValue = bk.shelf;
-          }
-          return defaultValue;
-        });
-
-        return setSearchRepo(
-          res &&
-            res.map((book) => ({
-              id: book.id,
-              shelf: book.shelf,
-              title: book.title,
-              authors: book.authors,
-              bookphoto: book.imageLinks.thumbnail,
-            })),
-        );
-      });
+      const res = await API.search(query.trim(), 20);
+      setSearchRepo(Array.from(res));
     } catch (error) {
       setError(true);
       console.error(error.message);
     }
   };
-  //console.log(defaultValue);
+
+  console.log(Array.isArray(searchRepo));
+  const searchBooks = (e) => {
+    e.preventDefault();
+    e.persist();
+    setQuery(e.target.value);
+    getBooks();
+  };
 
   const ErrorComponent = () => {
     return <h3>{`No results found for ${query}`}</h3>;
@@ -69,11 +54,19 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
         <ol className='books-grid'>
           {query &&
             searchRepo &&
-            searchRepo.map((newbook) => {
+            searchRepo.map((book) => {
+              let defaultValue = 'none';
+              for (let item of books) {
+                if (item.id === book.id) {
+                  defaultValue = item.shelf;
+                  break;
+                }
+              }
               return (
-                <li key={newbook.id}>
+                <li key={book.id}>
                   <Book
-                    newbook={newbook}
+                    key={book.id}
+                    book={book}
                     setBooks={setBooks}
                     books={books}
                     handleBookUpdate={handleBookUpdate}

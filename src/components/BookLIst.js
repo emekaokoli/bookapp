@@ -7,9 +7,10 @@ export const BookList = ({ books, loading, setBooks, handleBookUpdate }) => {
   return (
     <div className='book'>
       {shelfs.map(([shelfId, shelfName]) => {
-        const shelfedfBooks = books
+        const newbk = books
           .map((booksInShelf) => booksInShelf)
           .filter((filteredBooks) => filteredBooks.shelf === shelfId);
+        const shelfedfBooks = Array.from(newbk);
         return (
           <BookShelf
             key={shelfId}

@@ -22,15 +22,7 @@ function App() {
     const getAllbooks = async () => {
       const response = await API.getAll();
 
-      const newbook = response.map((book) => ({
-        id: book.id,
-        shelf: book.shelf,
-        title: book.title,
-        authors: book.authors,
-        bookphoto: book.imageLinks.thumbnail,
-      }));
-
-      setBooks(newbook);
+      setBooks(Array.from(response));
       setloading(false);
     };
 

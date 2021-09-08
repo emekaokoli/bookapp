@@ -10,20 +10,20 @@ export const BookShelf = ({
   books,
   handleBookUpdate,
 }) => {
-  
   return (
     <div>
       <div className='bookshelf'>
         <h2 className='bookshelf-title'>{shelf}</h2>
         <div className='bookshelf-books'>
           <ul className='books-grid'>
-            {shelfedfBooks &&
-              shelfedfBooks.map((newbook) => {
+            {Array.from(shelfedfBooks) &&
+              Array.from(shelfedfBooks).map((book) => {
+                console.log(shelf);
                 return (
-                  <li key={newbook.id}>
+                  <li key={book.id}>
                     <Book
                       shelf={shelf}
-                      newbook={newbook}
+                      book={book}
                       loading={loading}
                       books={books}
                       setBooks={setBooks}

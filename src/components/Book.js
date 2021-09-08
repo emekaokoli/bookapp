@@ -5,16 +5,19 @@ import { imageData } from '../icons/data';
 
 export const Book = ({
   books,
-  newbook,
+  book,
   loading,
   setBooks,
   handleBookUpdate,
   defaultValue,
   shelf,
 }) => {
-  const { authors, title, bookphoto } = newbook;
+  const { authors, title, imageLinks } = book;
 
-  const bookImage = bookphoto && bookphoto ? bookphoto : imageData;
+  const bookImage =
+    imageLinks.thumbnail && imageLinks.thumbnail
+      ? imageLinks.thumbnail
+      : imageData;
   const bookTitle = title ? title : 'No title available';
   return (
     <div className='book'>
@@ -29,8 +32,8 @@ export const Book = ({
         ></div>
         <div className='book-shelf-changer'>
           <select
-            onChange={(event) => handleBookUpdate(newbook, event.target.value)}
-            value={books.shelf}
+            onChange={(event) => handleBookUpdate(book, event.target.value)}
+            value={book.shelf}
             defaultValue={defaultValue}
           >
             <option value='move' disabled>
@@ -48,13 +51,20 @@ export const Book = ({
         </div>
       </div>
       <div className='book-title'>{bookTitle}</div>
-      <div>{authors}</div>
+      <div>
+        {authors &&
+          authors.map((author, index) => (
+            <div className='book-authors' key={index}>
+              {author}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
 Book.propTypes = {
+  book: PropTypes.object.isRequired,
   books: PropTypes.array.isRequired,
-  newbook: PropTypes.object.isRequired,
   loading: PropTypes.bool,
   setBooks: PropTypes.func,
   defaultValue: PropTypes.string,
