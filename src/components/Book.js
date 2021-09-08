@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { shelfs } from '../App';
+import { imageData } from '../icons/data';
 
 export const Book = ({
   books,
@@ -9,9 +10,12 @@ export const Book = ({
   setBooks,
   handleBookUpdate,
   defaultValue,
+  shelf,
 }) => {
-  const { bookphoto, title, authors } = book;
-  const { imageLinks } = books;
+  const { authors, title, bookphoto } = book;
+
+  const bookImage = bookphoto && bookphoto ? bookphoto : imageData;
+  const bookTitle = title ? title : 'No title available';
   return (
     <div className='book'>
       <div className='book-top'>
@@ -20,13 +24,13 @@ export const Book = ({
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${bookphoto || imageLinks.thumbnail})`,
+            backgroundImage: `url(${bookImage})`,
           }}
         ></div>
         <div className='book-shelf-changer'>
           <select
             onChange={(event) => handleBookUpdate(book, event.target.value)}
-            value={defaultValue}
+            value={book.shelf}
             defaultValue={defaultValue}
           >
             <option value='move' disabled>
@@ -43,7 +47,7 @@ export const Book = ({
           </select>
         </div>
       </div>
-      <div className='book-title'>{title}</div>
+      <div className='book-title'>{bookTitle}</div>
       <div>{authors}</div>
     </div>
   );

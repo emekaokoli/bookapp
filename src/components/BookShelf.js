@@ -21,6 +21,7 @@ export const BookShelf = ({
                 return (
                   <li key={book.id}>
                     <Book
+                      shelf={shelf}
                       book={book}
                       loading={loading}
                       books={books}

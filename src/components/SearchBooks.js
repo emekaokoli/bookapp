@@ -7,7 +7,11 @@ import PropTypes from 'prop-types';
 export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
   const [query, setQuery] = useState('');
   const [searchRepo, setSearchRepo] = useState([]);
+  const [error, setError] = useState(false);
+  //const [state, setstate] = useState('')
+
   let defaultValue = 'none';
+
   const search = async (e) => {
     e.preventDefault();
     e.persist();
@@ -21,11 +25,12 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
             return defaultValue;
           }
         });
+
         return setSearchRepo(
           res &&
             res.map((book) => ({
               id: book.id,
-              shelf: defaultValue,
+              shelf: book.shelf,
               title: book.title,
               authors: book.authors,
               bookphoto: book.imageLinks.thumbnail,
@@ -33,10 +38,13 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
         );
       });
     } catch (error) {
+      setError(true);
       console.error(error.message);
     }
   };
-
+  const ErrorComponent = () => {
+    return <h3>{`No results found for ${query}`}</h3>;
+  };
   return (
     <div className='search-books'>
       <div className='search-books-bar'>
@@ -57,22 +65,23 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
           <h1>Search</h1>
         </header>
         <ol className='books-grid'>
-          {query
-            ? searchRepo &&
-              searchRepo.map((book) => {
-                return (
-                  <li key={book.id}>
-                    <Book
-                      book={book}
-                      setBooks={setBooks}
-                      books={books}
-                      handleBookUpdate={handleBookUpdate}
-                      defaultValue={defaultValue}
-                    />
-                  </li>
-                );
-              })
-            : []}
+          {query &&
+            searchRepo &&
+            searchRepo.map((book) => {
+              return (
+                <li key={book.id}>
+                  <Book
+                    book={book}
+                    setBooks={setBooks}
+                    books={books}
+                    handleBookUpdate={handleBookUpdate}
+                    defaultValue={defaultValue}
+                  />
+                </li>
+              );
+            })}
+          {query && []}
+          {error && <ErrorComponent />}
         </ol>
       </div>
     </div>

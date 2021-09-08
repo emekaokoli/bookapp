@@ -39,11 +39,11 @@ function App() {
 
   const handleBookUpdate = async (book, shelf) => {
     book.shelf = shelf;
+
     await API.update(book, shelf).then((response) => {
       setBooks(books.filter((b) => b.id !== book.id).concat([book]));
     });
   };
-
   if (loading) {
     return (
       <div
