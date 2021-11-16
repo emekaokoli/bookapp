@@ -20,7 +20,6 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
     }
   };
 
-  console.log(Array.isArray(searchRepo));
   const searchBooks = (e) => {
     e.preventDefault();
     e.persist();
@@ -28,9 +27,7 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
     getBooks();
   };
 
-  const ErrorComponent = () => {
-    return <h3>{`No results found for ${query}`}</h3>;
-  };
+  const ErrorComponent = () => <h3>{`No results found for ${query}`}</h3>;
 
   return (
     <div className='search-books'>
@@ -54,18 +51,18 @@ export const SearchBooks = ({ books, setBooks, handleBookUpdate }) => {
         <ol className='books-grid'>
           {query &&
             searchRepo &&
-            searchRepo.map((book) => {
+            searchRepo?.map((book) => {
               let defaultValue = 'none';
               for (let item of books) {
-                if (item.id === book.id) {
-                  defaultValue = item.shelf;
+                if (item?.id === book?.id) {
+                  defaultValue = item?.shelf;
                   break;
                 }
               }
               return (
-                <li key={book.id}>
+                <li key={book?.id}>
                   <Book
-                    key={book.id}
+                    key={book?.id}
                     book={book}
                     setBooks={setBooks}
                     books={books}

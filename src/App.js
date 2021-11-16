@@ -56,13 +56,7 @@ function App() {
     <div className='App'>
       <Router>
         <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignContent: 'center',
-            textAlign: 'center',
-          }}
+        className='app-container'
         >
           <Switch>
             <Route exact path='/'>

@@ -9,35 +9,29 @@ export const BookShelf = ({
   setBooks,
   books,
   handleBookUpdate,
-}) => {
-  return (
-    <div>
-      <div className='bookshelf'>
-        <h2 className='bookshelf-title'>{shelf}</h2>
-        <div className='bookshelf-books'>
-          <ul className='books-grid'>
-            {Array.from(shelfedfBooks) &&
-              Array.from(shelfedfBooks).map((book) => {
-                console.log(shelf);
-                return (
-                  <li key={book.id}>
-                    <Book
-                      shelf={shelf}
-                      book={book}
-                      loading={loading}
-                      books={books}
-                      setBooks={setBooks}
-                      handleBookUpdate={handleBookUpdate}
-                    />
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
+}) => (
+  <div className='bookself-container'>
+    <div className='bookshelf'>
+      <h2 className='bookshelf-title'>{shelf}</h2>
+      <div className='bookshelf-books'>
+        <ul className='books-grid'>
+          {Array.from(shelfedfBooks)?.map((book) => (
+            <li key={book?.id}>
+              <Book
+                shelf={shelf}
+                book={book}
+                loading={loading}
+                books={books}
+                setBooks={setBooks}
+                handleBookUpdate={handleBookUpdate}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
-  );
-};
+  </div>
+);
 BookShelf.propTypes = {
   shelfedfBooks: PropTypes.array.isRequired,
   shelf: PropTypes.string,

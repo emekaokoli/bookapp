@@ -15,8 +15,8 @@ export const Book = ({
   const { authors, title, imageLinks } = book;
 
   const bookImage =
-    imageLinks.thumbnail && imageLinks.thumbnail
-      ? imageLinks.thumbnail
+    imageLinks?.thumbnail
+      ? imageLinks?.thumbnail
       : imageData;
   const bookTitle = title ? title : 'No title available';
   return (
@@ -27,6 +27,7 @@ export const Book = ({
           style={{
             width: 128,
             height: 193,
+            objectFit: 'cover',
             backgroundImage: `url(${bookImage})`,
           }}
         ></div>
@@ -39,21 +40,18 @@ export const Book = ({
             <option value='move' disabled>
               Move to...
             </option>
-            {Array.from(shelfs).map(([shelfId, shelfName]) => {
-              return (
-                <option key={shelfId} value={shelfId}>
-                  {shelfName}
-                </option>
-              );
-            })}
+            {Array.from(shelfs).map(([shelfId, shelfName]) => (
+              <option key={shelfId} value={shelfId}>
+                {shelfName}
+              </option>
+            ))}
             <option value='none'>None</option>
           </select>
         </div>
       </div>
       <div className='book-title'>{bookTitle}</div>
       <div>
-        {authors &&
-          authors.map((author, index) => (
+        {authors?.map((author, index) => (
             <div className='book-authors' key={index}>
               {author}
             </div>
